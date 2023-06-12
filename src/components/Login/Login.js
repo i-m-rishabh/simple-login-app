@@ -3,6 +3,9 @@ import React, { useState, useEffect, useReducer } from 'react';
 import Card from '../UI/Card/Card';
 import classes from './Login.module.css';
 import Button from '../UI/Button/Button';
+import { useContext } from 'react';
+import AuthContext from '../../store/auth-context';
+import Input from '../Input.js';
 
 function emailReducer(state,action){
   if(action.type === 'USER_INPUT'){
@@ -29,6 +32,7 @@ const Login = (props) => {
   // const [emailIsValid, setEmailIsValid] = useState();
   // const [enteredPassword, setEnteredPassword] = useState('');
   // const [passwordIsValid, setPasswordIsValid] = useState();
+  const ctx = useContext(AuthContext);
   const [formIsValid, setFormIsValid] = useState(false);
 
   const [email, dispatchEmail] = useReducer(emailReducer,{value:'', isValid:null});
@@ -97,7 +101,7 @@ const Login = (props) => {
   const submitHandler = (event) => {
     event.preventDefault();
     // props.onLogin(enteredEmail, enteredPassword);
-    props.onLogin(email.value, password.password);
+    ctx.onLogin(email.value, password.password);
     
   };
 
@@ -111,7 +115,15 @@ const Login = (props) => {
           }`}
         >
           <label htmlFor="email">E-Mail</label>
-          <input
+          {/* <input
+            type="email"
+            id="email"
+            // value={enteredEmail}
+            value={email.value}
+            onChange={emailChangeHandler}
+            onBlur={validateEmailHandler}
+          /> */}
+          <Input
             type="email"
             id="email"
             // value={enteredEmail}
@@ -127,7 +139,7 @@ const Login = (props) => {
           }`}
         >
           <label htmlFor="password">Password</label>
-          <input
+          <Input
             type="password"
             id="password"
             // value={enteredPassword}
